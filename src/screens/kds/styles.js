@@ -13,8 +13,6 @@ const styles = StyleSheet.create({
 
     headerText: {
         color: 'black',
-        fontWeight: 'bold',
-        fontSize: scale(16),
         textAlign: 'center'
     },
 

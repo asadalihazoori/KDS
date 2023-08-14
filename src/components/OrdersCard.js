@@ -3,9 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icons from 'react-native-vector-icons/FontAwesome6';
+import { fonts } from '../theme/fonts';
+import { FontStyle } from '../theme/FontStyle';
+import { useDispatch } from 'react-redux';
+import { complete_order } from '../redux/action';
+import { useSelector } from 'react-redux';
 
 const OrdersCard = ({ order }) => {
-    // console.log('card rendered');
     const [isConfirmed, setIsConfirmed] = useState(false);
     const [disabled, setDisable] = useState(false);
     const [color, setColor] = useState('blue');
@@ -13,6 +17,11 @@ const OrdersCard = ({ order }) => {
     const [running, setRunning] = useState(false);
     const [timeElapsed, setTimeElapsed] = useState(0);
     const [intervalId, setIntervalId] = useState(null);
+
+    const dispatch = useDispatch();
+    const data = useSelector((state) => state.completeOrderReducer);
+    console.log(data);
+
 
     useEffect(() => {
         toggleTimer();
@@ -24,8 +33,8 @@ const OrdersCard = ({ order }) => {
             setRunning(false);
         } else {
             const id = setInterval(() => {
-                setTimeElapsed(prevTime => prevTime + 1000); // Increment time by 1 second
-            }, 1000); // Update every second
+                setTimeElapsed(prevTime => prevTime + 1000);
+            }, 1000);
             setIntervalId(id);
             setRunning(true);
         }
@@ -37,39 +46,52 @@ const OrdersCard = ({ order }) => {
         return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
 
+    // const handleConfirm = () => {
+
+    //     AsyncStorage.getItem('orders', (err, orders) => {
+    //         if (err) {
+    //             console.error('Error fetching customers from local storage:', err);
+    //             return;
+    //         }
+
+    //         let parsedorders = [];
+
+    //         if (orders) {
+    //             parsedorders = JSON.parse(orders);
+    //         }
+    //         console.log(parsedorders)
+
+    //         parsedorders.push(order);
+
+    //         AsyncStorage.setItem('orders', JSON.stringify(parsedorders))
+    //             .then(() => {
+    //                 console.log('Order added successfully:');
+    //                 setIsConfirmed(true);
+    //                 setDisable(true);
+    //                 setColor('green');
+    //                 toggleTimer();
+    //             })
+    //             .catch(error => {
+    //                 console.log('Error saving order:', error);
+    //             });
+    //     });
+
+    // };
+
     const handleConfirm = () => {
+        const newOrder = { ...order, orderStatus: 'completed', time: formatTime(Math.floor(timeElapsed / 1000)) }
+        dispatch(complete_order(newOrder));
 
-        AsyncStorage.getItem('orders', (err, orders) => {
-            if (err) {
-                console.error('Error fetching customers from local storage:', err);
-                return;
-            }
-
-            let parsedorders = [];
-
-            if (orders) {
-                parsedorders = JSON.parse(orders);
-            }
-            console.log(parsedorders)
-
-            parsedorders.push(order);
-
-            AsyncStorage.setItem('orders', JSON.stringify(parsedorders))
-                .then(() => {
-                    console.log('Order added successfully:');
-                    setIsConfirmed(true);
-                    setDisable(true);
-                    setColor('green');
-                    toggleTimer();
-                })
-                .catch(error => {
-                    console.log('Error saving order:', error);
-                });
-        });
-
+        setIsConfirmed(true);
+        setDisable(true);
+        setColor('green');
+        toggleTimer();
     };
 
     const handleCancel = () => {
+        const newOrder = { ...order, orderStatus: 'cancelled', time: formatTime(Math.floor(timeElapsed / 1000)) }
+        dispatch(complete_order(newOrder));
+
         setDisable(true);
         setColor('red');
         toggleTimer();
@@ -80,12 +102,12 @@ const OrdersCard = ({ order }) => {
         return (
             <View style={styles.productView}>
                 <View style={styles.producHeadertView}>
-                    <Text style={styles.productHeaderText}>{product.qty}</Text>
-                    <Text style={styles.productHeaderText}>  {product.name}</Text>
+                    <Text style={FontStyle.Regular12}>{product.qty}</Text>
+                    <Text style={FontStyle.Regular12}>  {product.name}</Text>
                 </View>
 
-                <View style={styles.modifierView}>
-                    <Text style={styles.modifiersText}>{product.modifiers}</Text>
+                <View>
+                    <Text style={[FontStyle.Regular12, { color: 'grey' }]}>{product.modifiers}</Text>
                 </View>
             </View>
         );
@@ -94,12 +116,12 @@ const OrdersCard = ({ order }) => {
     return (
         <View style={styles.container}>
 
-            <View style={styles.headerView}>
+            <View >
                 <TouchableOpacity style={[styles.statusDot, { backgroundColor: color }]} />
-                <Text style={styles.orderNoText}>RPZ : {order.order_no}</Text>
+                <Text style={[styles.orderNoText, FontStyle.Bold12]}>RPZ : {order.order_no}</Text>
                 <View style={styles.callerIDview}>
-                    <Text style={styles.callIdText}>CALL ID: {order.call_id} </Text>
-                    <Text style={styles.callIdText} >{formatTime(Math.floor(timeElapsed / 1000))}</Text>
+                    <Text style={FontStyle.Bold12}>CALL ID: {order.call_id} </Text>
+                    <Text style={FontStyle.Bold12} >{formatTime(Math.floor(timeElapsed / 1000))}</Text>
                 </View>
             </View>
 
@@ -125,7 +147,7 @@ const OrdersCard = ({ order }) => {
                         activeOpacity={0.7}
                         onPress={handleConfirm}
                         disabled={disabled}>
-                        <Icons name="check" color={color} size={scale(20)}/>
+                        <Icons name="check" color={color} size={scale(20)} />
                     </TouchableOpacity>
                 </View>
 
@@ -140,16 +162,12 @@ export default OrdersCard;
 const styles = StyleSheet.create({
 
     container: {
-        // flex: 1,
         backgroundColor: "white",
         margin: scale(3),
         borderRadius: scale(12),
         paddingVertical: scale(8),
         paddingHorizontal: scale(10),
         width: '32.3%'
-    },
-
-    headerView: {
     },
 
     statusDot: {
@@ -165,15 +183,6 @@ const styles = StyleSheet.create({
 
     orderNoText: {
         marginTop: verticalScale(4),
-        fontSize: scale(10),
-        color: 'black',
-        fontWeight: 'bold',
-    },
-
-    callIdText: {
-        fontWeight: 'bold',
-        fontSize: scale(10),
-        color: 'black'
     },
 
     bodyView: {
@@ -186,19 +195,6 @@ const styles = StyleSheet.create({
 
     producHeadertView: {
         flexDirection: 'row'
-    },
-
-    productHeaderText: {
-        color: 'black',
-        fontSize: scale(10)
-    },
-
-    modifierView: {
-
-    },
-    modifiersText: {
-        color: 'grey',
-        fontSize: scale(10)
     },
 
     buttonsView: {
