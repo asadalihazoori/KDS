@@ -41,8 +41,8 @@ const KDS = () => {
     const orders = [
         {
             order_no: 'A 25486665',
-            call_id: 2246,
-            time: '00:34',
+            call_id: 224,
+            time: 10 ,
             products: [
                 {
                     id: 1,
@@ -60,7 +60,7 @@ const KDS = () => {
         {
             order_no: 'A 25486677',
             call_id: 225,
-            time: '01:22',
+            time: 35,
             products: [
                 {
                     id: 1,
@@ -78,7 +78,7 @@ const KDS = () => {
         {
             order_no: 'A 25486698',
             call_id: 226,
-            time: '12:44',
+            time: 15,
             products: [
                 {
                     id: 1,
@@ -96,7 +96,7 @@ const KDS = () => {
         {
             order_no: 'A 25486645',
             call_id: 229,
-            time: '12:44',
+            time: 25,
             products: [
                 {
                     id: 1,
@@ -114,7 +114,7 @@ const KDS = () => {
         {
             order_no: 'A 25486640',
             call_id: 232,
-            time: '12:44',
+            time: 12,
             products: [
                 {
                     id: 1,
@@ -132,7 +132,7 @@ const KDS = () => {
         {
             order_no: 'A 25486390',
             call_id: 233,
-            time: '12:44',
+            time: 20,
             products: [
                 {
                     id: 1,
@@ -150,7 +150,7 @@ const KDS = () => {
         {
             order_no: 'A 25486492',
             call_id: 243,
-            time: '12:44',
+            time: 1,
             products: [
                 {
                     id: 1,

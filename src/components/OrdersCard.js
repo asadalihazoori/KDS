@@ -1,66 +1,37 @@
 import { Text, View, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icons from 'react-native-vector-icons/FontAwesome6';
-import { fonts } from '../theme/fonts';
 import { FontStyle } from '../theme/FontStyle';
 import { useDispatch } from 'react-redux';
 import { complete_order } from '../redux/action';
 import { useSelector } from 'react-redux';
+import CountdownTimer from '../screens/CountdownTimer';
 
 const OrdersCard = ({ order }) => {
-    const [isConfirmed, setIsConfirmed] = useState(false);
     const [disabled, setDisable] = useState(false);
+    const [running, setRunning] = useState(true);
     const [color, setColor] = useState('blue');
-
-    const [running, setRunning] = useState(false);
-    const [timeElapsed, setTimeElapsed] = useState(0);
-    const [intervalId, setIntervalId] = useState(null);
-
     const dispatch = useDispatch();
-    // const data = useSelector((state) => state.completedOrders);
 
-    useEffect(() => {
-        toggleTimer();
-    }, [])
-
-    const toggleTimer = () => {
-        if (running) {
-            clearInterval(intervalId);
-            setRunning(false);
-        } else {
-            const id = setInterval(() => {
-                setTimeElapsed(prevTime => prevTime + 1000);
-            }, 1000);
-            setIntervalId(id);
-            setRunning(true);
-        }
-    };
-
-    const formatTime = timeInSeconds => {
-        const minutes = Math.floor(timeInSeconds / 60);
-        const seconds = timeInSeconds % 60;
-        return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    };
+    // const data = useSelector((state) => state.completedOrders); // to get data
 
     const handleConfirm = () => {
-        const newOrder = { ...order, orderStatus: 'completed', time: formatTime(Math.floor(timeElapsed / 1000)) }
+        const newOrder = { ...order, orderStatus: 'completed', }
         dispatch(complete_order(newOrder));
 
-        setIsConfirmed(true);
         setDisable(true);
         setColor('green');
-        toggleTimer();
+        setRunning(false);
     };
 
     const handleCancel = () => {
-        const newOrder = { ...order, orderStatus: 'cancelled', time: formatTime(Math.floor(timeElapsed / 1000)) }
+        const newOrder = { ...order, orderStatus: 'cancelled', }
         dispatch(complete_order(newOrder));
 
         setDisable(true);
         setColor('red');
-        toggleTimer();
+        setRunning(false);
     }
 
     const Products = ({ product }) => {
@@ -87,7 +58,7 @@ const OrdersCard = ({ order }) => {
                 <Text style={[styles.orderNoText, FontStyle.Bold12]}>RPZ : {order.order_no}</Text>
                 <View style={styles.callerIDview}>
                     <Text style={FontStyle.Bold12}>CALL ID: {order.call_id} </Text>
-                    <Text style={FontStyle.Bold12} >{formatTime(Math.floor(timeElapsed / 1000))}</Text>
+                    <CountdownTimer initialTime={order.time * 60} running={running} />
                 </View>
             </View>
 
