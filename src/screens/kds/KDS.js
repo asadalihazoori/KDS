@@ -8,14 +8,19 @@ import { useDispatch } from 'react-redux';
 import { add_order } from '../../redux/action'
 
 const KDS = () => {
-    // const orders = useSelector((state) => state.addOrderReducer);
-    // const dispatch = useDispatch();
 
+    // get orders from redux
+    // var orders = useSelector((state) => state.addOrder.data);
+
+
+    // call once to set data if you want to get orders frm redux 
+
+    // const dispatch = useDispatch();
     // useEffect(() => {
     //     dispatch(add_order(
     //         {
     //             order_no: 'A 25486665',
-    //             call_id: 2246,
+    //             call_id: 226,
     //             products: [
     //                 {
     //                     id: 1,
@@ -31,7 +36,7 @@ const KDS = () => {
     //                 }]
     //         },
     //     ))
-    // }, [])
+    // }, []);
 
     const orders = [
         {

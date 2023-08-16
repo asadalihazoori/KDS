@@ -4,6 +4,7 @@ const { StyleSheet } = require("react-native");
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#c9cdcc',
+        flex: 1
     },
 
     header: {
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
 
     ordersView: {
         marginHorizontal: scale(7),
-        marginBottom: verticalScale(97)
+        marginBottom: verticalScale(50)
     },
 
 })

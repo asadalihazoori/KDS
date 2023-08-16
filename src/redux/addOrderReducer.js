@@ -1,15 +1,16 @@
 import { ADD_ORDER } from "./const";
 
-const initialState = [];
+const initialState = {
+    data: []
+};
 
 export const addOrderReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_ORDER:
-            console.log('data recieved')
-            return [
+            return {
                 ...state,
-                action.data
-            ];
+                data: [...state.data, action.data]
+            };
 
         default:
             return state;

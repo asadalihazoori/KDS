@@ -1,15 +1,16 @@
 import { Complete_Order } from "./const";
 
-const initialState = [];
+const initialState = {
+    data: []
+};
 
 export const completeOrderReducer = (state = initialState, action) => {
     switch (action.type) {
         case Complete_Order:
-            console.log('data added');
-            return [
+            return {
                 ...state,
-                action.data
-            ];
+                data: [...state.data, action.data]
+            };
 
         default:
             return state;

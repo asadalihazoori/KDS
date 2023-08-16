@@ -19,9 +19,7 @@ const OrdersCard = ({ order }) => {
     const [intervalId, setIntervalId] = useState(null);
 
     const dispatch = useDispatch();
-    const data = useSelector((state) => state.completeOrderReducer);
-    console.log(data);
-
+    // const data = useSelector((state) => state.completedOrders);
 
     useEffect(() => {
         toggleTimer();
@@ -45,38 +43,6 @@ const OrdersCard = ({ order }) => {
         const seconds = timeInSeconds % 60;
         return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
-
-    // const handleConfirm = () => {
-
-    //     AsyncStorage.getItem('orders', (err, orders) => {
-    //         if (err) {
-    //             console.error('Error fetching customers from local storage:', err);
-    //             return;
-    //         }
-
-    //         let parsedorders = [];
-
-    //         if (orders) {
-    //             parsedorders = JSON.parse(orders);
-    //         }
-    //         console.log(parsedorders)
-
-    //         parsedorders.push(order);
-
-    //         AsyncStorage.setItem('orders', JSON.stringify(parsedorders))
-    //             .then(() => {
-    //                 console.log('Order added successfully:');
-    //                 setIsConfirmed(true);
-    //                 setDisable(true);
-    //                 setColor('green');
-    //                 toggleTimer();
-    //             })
-    //             .catch(error => {
-    //                 console.log('Error saving order:', error);
-    //             });
-    //     });
-
-    // };
 
     const handleConfirm = () => {
         const newOrder = { ...order, orderStatus: 'completed', time: formatTime(Math.floor(timeElapsed / 1000)) }
