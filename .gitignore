@@ -34,6 +34,7 @@ local.properties
 .cxx/
 *.keystore
 !debug.keystore
+android/app/build/
 
 # node.js
 #
@@ -41,7 +42,7 @@ node_modules/
 npm-debug.log
 yarn-error.log
 yarn.lock
-package-lock.js
+package-lock.json
 
 # fastlane
 #
