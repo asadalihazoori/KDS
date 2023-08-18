@@ -9,9 +9,11 @@ import { useSelector } from 'react-redux';
 import CountdownTimer from '../screens/CountdownTimer';
 
 const OrdersCard = ({ order }) => {
+
     const [disabled, setDisable] = useState(false);
     const [running, setRunning] = useState(true);
     const [color, setColor] = useState('blue');
+
     const dispatch = useDispatch();
 
     // const data = useSelector((state) => state.completedOrders); // to get data
@@ -36,15 +38,16 @@ const OrdersCard = ({ order }) => {
 
     const Products = ({ product }) => {
 
+        const modifiers = product?.modifier_list?.length != 0 ? product?.modifier_list?.filter(item => item?.count != 0)?.map(item => `${item?.count}x ${item?.name}`) : []
+
         return (
             <View style={styles.productView}>
                 <View style={styles.producHeadertView}>
                     <Text style={FontStyle.Regular12}>{product.qty}</Text>
-                    <Text style={FontStyle.Regular12}>  {product.name}</Text>
+                    <Text style={FontStyle.Regular12}>  {product?.title} {product?.arabic_name}</Text>
                 </View>
-
                 <View>
-                    <Text style={[FontStyle.Regular12, { color: 'grey' }]}>{product.modifiers}</Text>
+                    <Text style={[FontStyle.Regular12, { color: 'grey' }]}>{(modifiers && modifiers?.length != 0) ? modifiers?.toString() : ''}</Text>
                 </View>
             </View>
         );
@@ -55,10 +58,11 @@ const OrdersCard = ({ order }) => {
 
             <View >
                 <TouchableOpacity style={[styles.statusDot, { backgroundColor: color }]} />
-                <Text style={[styles.orderNoText, FontStyle.Bold12]}>RPZ : {order.order_no}</Text>
+                <Text style={[styles.orderNoText, FontStyle.Bold12]}>Transaction # : {order?.transactionNo}</Text>
                 <View style={styles.callerIDview}>
-                    <Text style={FontStyle.Bold12}>CALL ID: {order.call_id} </Text>
-                    <CountdownTimer initialTime={order.time * 60} running={running} />
+                    {console.log(order?.modifier_list)}
+                    <Text style={FontStyle.Bold12}>CALL ID: {order?.callNo} </Text>
+                    {/* <CountdownTimer initialTime={order.time * 60} running={running} /> */}
                 </View>
             </View>
 
@@ -66,7 +70,7 @@ const OrdersCard = ({ order }) => {
             <View style={styles.bodyView}>
 
                 <FlatList
-                    data={order.products}
+                    data={order?.products}
                     renderItem={({ item }) => <Products product={item} />}
                     keyExtractor={item => item.id}
                 />
