@@ -1,4 +1,4 @@
-import { ADD_ORDER } from "./const";
+import { ADD_ORDER, REMOVE_ORDER } from "./const";
 
 const initialState = {
     data: []
@@ -10,6 +10,14 @@ export const addOrderReducer = (state = initialState, action) => {
             return {
                 ...state,
                 data: [...state.data, action.data]
+            };
+
+        case REMOVE_ORDER:
+            let result = state.data.filter(item => {
+                return item.id != action.data
+            })
+            return {
+                data: [...result]
             };
 
         default:

@@ -22,6 +22,7 @@ export const SocketProvider = (props) => {
 
             socket.on('data', (data) => {
                 const order = JSON.parse(data)
+                // console.log(order);
                 dispatch(add_order(order))
             });
 

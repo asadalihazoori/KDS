@@ -1,192 +1,62 @@
-import { View, Text, FlatList } from 'react-native'
-import React, { useEffect } from 'react'
-import OrdersCard from '../../components/OrdersCard'
+import { View, Text } from 'react-native'
+import React from 'react'
 import styles from './styles'
 import { FontStyle } from '../../theme/FontStyle'
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { add_order } from '../../redux/action'
+import { TabBar, TabView } from 'react-native-tab-view';
+import FilterOrdersRunning from '../../components/FilterOrdersRunning'
+import FilterOrdersComplete from '../../components/FilterOrdersComplete'
 
-const KDS = () => {
+const KDS = ({ navigation }) => {
 
-    // get orders from redux
-    var orders = useSelector((state) => state.addOrder.data);
 
-    // call once to set data if you want to get orders frm redux 
 
-    // const dispatch = useDispatch();
-    // useEffect(() => {
-    //     dispatch(add_order(
-    //         {
-    //             order_no: 'A 25486665',
-    //             call_id: 226,
-    //             products: [
-    //                 {
-    //                     id: 1,
-    //                     qty: 2,
-    //                     name: 'Latte',
-    //                     modifiers: 'To Go, Colombia Las Milagros, Low Fat Milk, No Sugar'
-    //                 },
-    //                 {
-    //                     id: 2,
-    //                     qty: 4,
-    //                     name: 'Cappuccino',
-    //                     modifiers: 'Costa Rica Encinos, Full Fat Milk'
-    //                 }]
-    //         },
-    //     ))
-    // }, []);
+    const [index, setIndex] = React.useState(0);
 
-    // const orders = [
-    //     {
-    //         order_no: 'A 25486665',
-    //         call_id: 224,
-    //         time: 10 ,
-    //         products: [
-    //             {
-    //                 id: 1,
-    //                 qty: 2,
-    //                 name: 'Latte',
-    //                 modifiers: 'To Go, Colombia Las Milagros, Low Fat Milk, No Sugar'
-    //             },
-    //             {
-    //                 id: 2,
-    //                 qty: 4,
-    //                 name: 'Cappuccino',
-    //                 modifiers: 'Costa Rica Encinos, Full Fat Milk'
-    //             }]
-    //     },
-    //     {
-    //         order_no: 'A 25486677',
-    //         call_id: 225,
-    //         time: 35,
-    //         products: [
-    //             {
-    //                 id: 1,
-    //                 qty: 2,
-    //                 name: 'Latte',
-    //                 modifiers: 'To Go, Colombia Las Milagros, Low Fat Milk, No Sugar'
-    //             },
-    //             {
-    //                 id: 2,
-    //                 qty: 4,
-    //                 name: 'Cappuccino',
-    //                 modifiers: 'Costa Rica Encinos, Full Fat Milk'
-    //             }]
-    //     },
-    //     {
-    //         order_no: 'A 25486698',
-    //         call_id: 226,
-    //         time: 15,
-    //         products: [
-    //             {
-    //                 id: 1,
-    //                 qty: 2,
-    //                 name: 'Latte',
-    //                 modifiers: 'To Go, Colombia Las Milagros, Low Fat Milk, No Sugar'
-    //             },
-    //             {
-    //                 id: 2,
-    //                 qty: 4,
-    //                 name: 'Cappuccino',
-    //                 modifiers: 'Costa Rica Encinos, Full Fat Milk'
-    //             }]
-    //     },
-    //     {
-    //         order_no: 'A 25486645',
-    //         call_id: 229,
-    //         time: 25,
-    //         products: [
-    //             {
-    //                 id: 1,
-    //                 qty: 2,
-    //                 name: 'Latte',
-    //                 modifiers: 'To Go, Colombia Las Milagros, Low Fat Milk, No Sugar'
-    //             },
-    //             {
-    //                 id: 2,
-    //                 qty: 4,
-    //                 name: 'Cappuccino',
-    //                 modifiers: 'Costa Rica Encinos, Full Fat Milk'
-    //             }]
-    //     },
-    //     {
-    //         order_no: 'A 25486640',
-    //         call_id: 232,
-    //         time: 12,
-    //         products: [
-    //             {
-    //                 id: 1,
-    //                 qty: 2,
-    //                 name: 'Latte',
-    //                 modifiers: 'To Go, Colombia Las Milagros, Low Fat Milk, No Sugar'
-    //             },
-    //             {
-    //                 id: 2,
-    //                 qty: 4,
-    //                 name: 'Cappuccino',
-    //                 modifiers: 'Costa Rica Encinos, Full Fat Milk'
-    //             }]
-    //     },
-    //     {
-    //         order_no: 'A 25486390',
-    //         call_id: 233,
-    //         time: 20,
-    //         products: [
-    //             {
-    //                 id: 1,
-    //                 qty: 2,
-    //                 name: 'Latte',
-    //                 modifiers: 'To Go, Colombia Las Milagros, Low Fat Milk, No Sugar'
-    //             },
-    //             {
-    //                 id: 2,
-    //                 qty: 4,
-    //                 name: 'Cappuccino',
-    //                 modifiers: 'Costa Rica Encinos, Full Fat Milk'
-    //             }]
-    //     },
-    //     {
-    //         order_no: 'A 25486492',
-    //         call_id: 243,
-    //         time: 1,
-    //         products: [
-    //             {
-    //                 id: 1,
-    //                 qty: 2,
-    //                 name: 'Latte',
-    //                 modifiers: 'To Go, Colombia Las Milagros, Low Fat Milk, No Sugar'
-    //             },
-    //             {
-    //                 id: 2,
-    //                 qty: 4,
-    //                 name: 'Cappuccino',
-    //                 modifiers: 'Costa Rica Encinos, Full Fat Milk'
-    //             }]
-    //     },
-    // ];
+    const [routes] = React.useState([
+        { key: 'first', title: "Running" },
+        { key: 'second', title: "Complete" }
+    ]);
+
+
+    const renderTabBar = propss => (
+        <TabBar
+            {...propss}
+            indicatorStyle={styles.TabViewCreateIndicator}
+            style={styles.TabViewCreateContainer}
+            activeColor="#000"
+            inactiveColor="#7A7578"
+            getLabelText={({ route }) => route.title}
+
+        />
+    );
+
+
+    const RenderScene = (e, navigation) => {
+
+        switch (e.route.key) {
+            case 'first':
+                return <FilterOrdersRunning navigation={navigation} />;
+            case 'second':
+                return <FilterOrdersComplete navigation={navigation} />;
+        }
+    };
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={[styles.headerText, FontStyle.Bold18]}>KDS</Text>
+                <Text style={[ FontStyle.Bold18, {color: '#848484'}]}>KDS</Text>
             </View>
 
-            <View style={styles.ordersView}>
-                <FlatList
-                    data={orders}
-                    renderItem={({ item }) => <OrdersCard order={item} />}
-                    keyExtractor={(_, index) => index.toString()}
-                    numColumns={3}
-                    columnWrapperStyle={{
-                        // justifyContent: 'space-around',
-                    }}
-                />
 
-            </View>
+            <TabView
+                navigationState={{ index, routes }}
+                renderScene={(e) => RenderScene(e, navigation)}
+                onIndexChange={setIndex}
+                renderTabBar={renderTabBar}
+            />
 
         </View>
     )
 }
 
-export default KDS
+export default KDS;
