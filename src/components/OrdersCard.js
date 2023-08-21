@@ -51,20 +51,16 @@ const OrdersCard = ({ order }) => {
     const handleConfirm = () => {
         const newOrder = { ...order, orderStatus: 'completed', time: formatTime(Math.floor(timeElapsed / 1000)) }
         dispatch(complete_order(newOrder));
-        dispatch(remove_order(order.id));
+        dispatch(remove_order(order));
 
-        // setDisable(true);
-        // setColor('green');
         toggleTimer();
     };
 
     const handleCancel = () => {
         const newOrder = { ...order, orderStatus: 'cancelled', time: formatTime(Math.floor(timeElapsed / 1000)) }
         dispatch(complete_order(newOrder));
-        dispatch(remove_order(order.id));
+        dispatch(remove_order(order));
 
-        // setDisable(true);
-        // setColor('red');
         toggleTimer();
     }
 
@@ -114,26 +110,29 @@ const OrdersCard = ({ order }) => {
                     keyExtractor={item => item.id}
                 />
 
-                {orderStatus &&
-                    <View style={styles.buttonsView}>
-                        <TouchableOpacity
-                            activeOpacity={0.7}
-                            onPress={handleCancel}
-                            disabled={disabled}>
-
-                            <Icons name="xmark" color={color} size={scale(10)} />
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            activeOpacity={0.7}
-                            onPress={handleConfirm}
-                            disabled={disabled}>
-                            <Icons name="check" color={color} size={scale(10)} />
-                        </TouchableOpacity>
-                    </View>
-                }
             </View>
-        </View>
+
+            {orderStatus &&
+                <View style={styles.buttonsView}>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={handleCancel}
+                        disabled={disabled}
+                        style={styles.iconsView}>
+
+                        <Icons name="xmark" color={color} size={scale(10)} />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={handleConfirm}
+                        disabled={disabled}
+                        style={[styles.iconsView, { alignItems: 'flex-end', }]}>
+                        <Icons name="check" color={color} size={scale(10)} />
+                    </TouchableOpacity>
+                </View>
+            }
+        </View >
     )
 }
 
@@ -143,7 +142,7 @@ export default OrdersCard;
 const styles = StyleSheet.create({
 
     container: {
-        width: '32%',
+        width: '31.7%',
         backgroundColor: "white",
         borderRadius: 12,
         paddingVertical: 10,
@@ -156,7 +155,7 @@ const styles = StyleSheet.create({
         width: moderateScale(12),
         height: moderateScale(12),
         borderRadius: moderateScale(17),
-        marginBottom: verticalScale(5),
+        marginBottom: verticalScale(4),
     },
 
     callerIDview: {
@@ -170,6 +169,7 @@ const styles = StyleSheet.create({
 
     bodyView: {
         backgroundColor: '#fff',
+        flex: 1
     },
 
     productView: {
@@ -181,9 +181,16 @@ const styles = StyleSheet.create({
     },
 
     buttonsView: {
-        marginTop: verticalScale(8),
+        marginTop: verticalScale(4),
         flexDirection: 'row',
         justifyContent: 'space-between',
+
+    },
+
+    iconsView: {
+        width: moderateScale(15),
+        height: moderateScale(15),
+        justifyContent: 'center',
     },
 
 })

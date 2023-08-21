@@ -14,7 +14,11 @@ export const addOrderReducer = (state = initialState, action) => {
 
         case REMOVE_ORDER:
             let result = state.data.filter(item => {
-                return item.id != action.data
+
+                console.log("item",item);
+                console.log('action', action);
+
+                return item != action.data
             })
             return {
                 data: [...result]
