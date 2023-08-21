@@ -44,7 +44,7 @@ const KDS = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={[ FontStyle.Bold18, {color: '#848484'}]}>KDS</Text>
+                <Text style={[ FontStyle.Bold18, {color: 'black'}]}>KDS</Text>
             </View>
 
 

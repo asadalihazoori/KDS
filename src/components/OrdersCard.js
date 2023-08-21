@@ -9,7 +9,7 @@ import { complete_order, remove_order } from '../redux/action';
 const OrdersCard = ({ order }) => {
 
     const [disabled, setDisable] = useState(false);
-    const [color, setColor] = useState('blue');
+    const [color, setColor] = useState('#1089FF');
     const [orderStatus, setOrderStatus] = useState(false);
 
     const [running, setRunning] = useState(false);
@@ -148,6 +148,14 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 14,
         margin: 2,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.13,
+        shadowRadius: 2,
+        elevation:2
         // flex: 1
     },
 
