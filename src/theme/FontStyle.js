@@ -8,6 +8,13 @@ export const FontStyle = {
         letterSpacing: -0.01,
         color: '#000000'
     },
+    Bold14: {
+        fontFamily: fonts.bold,
+        fontSize: 14,
+        fontWeight: '400',
+        letterSpacing: -0.01,
+        color: '#000000'
+    },
     Bold18: {
         fontFamily: fonts.bold,
         fontSize: 18,
@@ -19,6 +26,13 @@ export const FontStyle = {
     Regular12: {
         fontFamily: fonts.regular,
         fontSize: 12,
+        fontWeight: '400',
+        letterSpacing: -0.01,
+        color: '#000000'
+    },
+    Regular14: {
+        fontFamily: fonts.regular,
+        fontSize: 14,
         fontWeight: '400',
         letterSpacing: -0.01,
         color: '#000000'

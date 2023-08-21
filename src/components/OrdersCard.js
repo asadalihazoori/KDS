@@ -71,12 +71,12 @@ const OrdersCard = ({ order }) => {
         return (
             <View style={styles.productView}>
                 <View style={styles.producHeadertView}>
-                    <Text style={FontStyle.Regular12}>{product.qty}</Text>
-                    <Text style={FontStyle.Regular12}>  {product?.title} {product?.arabic_name}</Text>
+                    <Text style={FontStyle.Regular14}>{product.qty}</Text>
+                    <Text style={FontStyle.Regular14}>  {product?.title} {product?.arabic_name}</Text>
                 </View>
                 {(modifiers && modifiers?.length != 0) &&
                     <View>
-                        <Text style={[FontStyle.Regular12, { color: 'grey' }]}>{modifiers?.toString()}</Text>
+                        <Text style={[FontStyle.Regular14, { color: 'grey' }]}>{modifiers?.toString()}</Text>
                     </View>
                 }
             </View>
@@ -88,10 +88,10 @@ const OrdersCard = ({ order }) => {
 
             <View >
                 <TouchableOpacity style={[styles.statusDot, { backgroundColor: color }]} />
-                <Text style={[styles.orderNoText, FontStyle.Bold12]}>Transaction # : {order?.transactionNo}</Text>
+                <Text style={[styles.orderNoText, FontStyle.Bold14]}>Transaction # : {order?.transactionNo}</Text>
                 <View style={styles.callerIDview}>
                     {/* {console.log(order?.modifier_list)} */}
-                    <Text style={FontStyle.Bold12}>CALL ID: {order?.callNo} </Text>
+                    <Text style={FontStyle.Bold14}>CALL ID: {order?.callNo} </Text>
                     {orderStatus ?
                         <Text style={FontStyle.Bold12}>{formatTime(Math.floor(timeElapsed / 1000))}</Text>
                         :
