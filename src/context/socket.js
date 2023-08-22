@@ -22,8 +22,11 @@ export const SocketProvider = (props) => {
 
             socket.on('data', (data) => {
                 const order = JSON.parse(data)
-                // console.log(order);
-                dispatch(add_order(order))
+                const orderWithTime = {
+                    ...order,
+                    time: 0
+                };
+                dispatch(add_order(orderWithTime))
             });
 
             socket.on('error', (error) => {

@@ -1,4 +1,4 @@
-const { Complete_Order, ADD_ORDER, REMOVE_ORDER } = require("./const");
+const { Complete_Order, ADD_ORDER, REMOVE_ORDER, UPDATE_Time } = require("./const");
 
 
 export function add_order(item) {
@@ -6,7 +6,6 @@ export function add_order(item) {
         type: ADD_ORDER,
         data: item
     }
-
 }
 
 export function remove_order(item) {
@@ -14,7 +13,14 @@ export function remove_order(item) {
         type: REMOVE_ORDER,
         data: item
     }
+}
 
+export function update_order_time(callNo, time) {
+    return {
+        type: UPDATE_Time,
+        callNo: callNo,
+        time: time
+    }
 }
 
 export function complete_order(item) {
@@ -22,5 +28,4 @@ export function complete_order(item) {
         type: Complete_Order,
         data: item
     }
-
 }

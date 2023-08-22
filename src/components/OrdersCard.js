@@ -5,23 +5,17 @@ import Icons from 'react-native-vector-icons/FontAwesome6';
 import { FontStyle } from '../theme/FontStyle';
 import { useDispatch } from 'react-redux';
 import { complete_order, remove_order } from '../redux/action';
+import Timer, { formatTime } from './Timer';
 
 const OrdersCard = ({ order }) => {
 
-    const [disabled, setDisable] = useState(false);
     const [color, setColor] = useState('#1089FF');
     const [orderStatus, setOrderStatus] = useState(false);
-
-    const [running, setRunning] = useState(false);
-    const [timeElapsed, setTimeElapsed] = useState(0);
-    const [intervalId, setIntervalId] = useState(null);
-
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (order.orderStatus == undefined) {
             setOrderStatus(true);
-            toggleTimer();
         }
         else {
             order.orderStatus == 'completed' ? setColor('green') : setColor('red')
@@ -29,39 +23,17 @@ const OrdersCard = ({ order }) => {
     }, [])
 
 
-    const toggleTimer = () => {
-        if (running) {
-            clearInterval(intervalId);
-            setRunning(false);
-        } else {
-            const id = setInterval(() => {
-                setTimeElapsed(prevTime => prevTime + 1000);
-            }, 1000);
-            setIntervalId(id);
-            setRunning(true);
-        }
-    };
-
-    const formatTime = timeInSeconds => {
-        const minutes = Math.floor(timeInSeconds / 60);
-        const seconds = timeInSeconds % 60;
-        return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    }
 
     const handleConfirm = () => {
-        const newOrder = { ...order, orderStatus: 'completed', time: formatTime(Math.floor(timeElapsed / 1000)) }
+        const newOrder = { ...order, orderStatus: 'completed', }
         dispatch(complete_order(newOrder));
         dispatch(remove_order(order));
-
-        toggleTimer();
     };
 
     const handleCancel = () => {
-        const newOrder = { ...order, orderStatus: 'cancelled', time: formatTime(Math.floor(timeElapsed / 1000)) }
+        const newOrder = { ...order, orderStatus: 'cancelled', }
         dispatch(complete_order(newOrder));
         dispatch(remove_order(order));
-
-        toggleTimer();
     }
 
     const Products = ({ product }) => {
@@ -90,12 +62,11 @@ const OrdersCard = ({ order }) => {
                 <TouchableOpacity style={[styles.statusDot, { backgroundColor: color }]} />
                 <Text style={[styles.orderNoText, FontStyle.Bold14]}>Transaction # : {order?.transactionNo}</Text>
                 <View style={styles.callerIDview}>
-                    {/* {console.log(order?.modifier_list)} */}
                     <Text style={FontStyle.Bold14}>CALL ID: {order?.callNo} </Text>
                     {orderStatus ?
-                        <Text style={FontStyle.Bold12}>{formatTime(Math.floor(timeElapsed / 1000))}</Text>
+                        <Timer callNo={order.callNo} />
                         :
-                        <Text style={FontStyle.Bold12}>{order.time}</Text>
+                        <Text style={FontStyle.Bold12}>{formatTime(order.time)}</Text>
 
                     }
                 </View>
@@ -117,7 +88,6 @@ const OrdersCard = ({ order }) => {
                     <TouchableOpacity
                         activeOpacity={0.7}
                         onPress={handleCancel}
-                        disabled={disabled}
                         style={styles.iconsView}>
 
                         <Icons name="xmark" color={color} size={scale(10)} />
@@ -126,7 +96,6 @@ const OrdersCard = ({ order }) => {
                     <TouchableOpacity
                         activeOpacity={0.7}
                         onPress={handleConfirm}
-                        disabled={disabled}
                         style={[styles.iconsView, { alignItems: 'flex-end', }]}>
                         <Icons name="check" color={color} size={scale(10)} />
                     </TouchableOpacity>
@@ -155,8 +124,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.13,
         shadowRadius: 2,
-        elevation:2
-        // flex: 1
+        elevation: 2
     },
 
     statusDot: {

@@ -8,15 +8,12 @@ import FilterOrdersComplete from '../../components/FilterOrdersComplete'
 
 const KDS = ({ navigation }) => {
 
-
-
     const [index, setIndex] = React.useState(0);
 
     const [routes] = React.useState([
         { key: 'first', title: "Running" },
         { key: 'second', title: "Complete" }
     ]);
-
 
     const renderTabBar = propss => (
         <TabBar
@@ -26,10 +23,8 @@ const KDS = ({ navigation }) => {
             activeColor="#000"
             inactiveColor="#7A7578"
             getLabelText={({ route }) => route.title}
-
         />
     );
-
 
     const RenderScene = (e, navigation) => {
 
@@ -44,9 +39,8 @@ const KDS = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={[ FontStyle.Bold18, {color: 'black'}]}>KDS</Text>
+                <Text style={[FontStyle.Bold18, { color: 'black' }]}>KDS</Text>
             </View>
-
 
             <TabView
                 navigationState={{ index, routes }}
@@ -54,7 +48,6 @@ const KDS = ({ navigation }) => {
                 onIndexChange={setIndex}
                 renderTabBar={renderTabBar}
             />
-
         </View>
     )
 }
